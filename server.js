@@ -182,7 +182,7 @@ const api = {
       if (!TEAM_IDS.includes(id)) return { ok: false, error: 'Неизвестная команда' };
       // нормализуем пароль: регистр, пробелы, русские буквы-двойники
       const pass = String(body.pass || '').trim().toUpperCase()
-        .replace(/А/g, 'A').replace(/В/g, 'B').replace(/С/g, 'C')
+        .replace(/А/g, 'A').replace(/Б/g, 'B').replace(/В/g, 'B').replace(/С/g, 'C')
         .replace(/Е/g, 'E').replace(/Д/g, 'D');
       if (pass !== String(id) + '2026') return { ok: false, error: 'Неверный пароль команды (буква команды + 2026)' };
       return { ok: true, redirect: '/team.html' };
@@ -214,9 +214,11 @@ const api = {
       };
     }
     if ((state.phase === 'auction2' || state.phase === 'auction1' || state.phase === 'round6') && state.auction) {
+      const bids = state.auction.bids || [];
       mine.auction = {
         resource: state.auction.resource, qty: state.auction.qty, price: state.auction.price,
-        closed: state.auction.closed, winner: state.auction.winner, finalPrice: state.auction.finalPrice
+        closed: state.auction.closed, winner: state.auction.winner, finalPrice: state.auction.finalPrice,
+        leader: bids.length ? bids[bids.length - 1].team : null
       };
     }
     if (state.phase === 'results') pub.results = leaderboard();

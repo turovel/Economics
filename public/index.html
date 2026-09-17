@@ -3,120 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c1826">
 <title>Рынок под давлением — вход</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #eaf4fb;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e8f1f2;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #070d17, #0c1826 55%, #10233b);
+    background-attachment: fixed;
     padding: 20px;
   }
-  .wrap { width: 100%; max-width: 560px; }
-  h1 {
-    text-align: center;
-    font-size: 30px;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
+  body::before {
+    content: ""; position: fixed; z-index: -1; border-radius: 50%;
+    width: 600px; height: 600px; left: -160px; top: -180px;
+    background: radial-gradient(circle, rgba(255,183,3,.16), transparent 65%);
+    filter: blur(80px);
   }
-  .sub {
-    text-align: center;
-    color: #9fc4d0;
-    font-size: 14px;
-    margin-bottom: 28px;
+  body::after {
+    content: ""; position: fixed; z-index: -1; border-radius: 50%;
+    width: 660px; height: 660px; right: -190px; bottom: -220px;
+    background: radial-gradient(circle, rgba(56,132,255,.18), transparent 65%);
+    filter: blur(90px);
   }
+  .wrap { width: 100%; max-width: 620px; }
+  h1 { text-align: center; font-size: 34px; font-weight: 900; letter-spacing: .5px; }
+  h1 .gold { color: #ffd166; text-shadow: 0 0 34px rgba(255,183,3,.45); }
+  .sub { text-align: center; color: #8fb3c9; font-size: 14.5px; margin: 8px 0 26px; }
   .card {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 14px;
-    padding: 26px;
-    backdrop-filter: blur(6px);
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(148,190,220,.14);
+    border-radius: 20px; padding: 26px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    animation: popIn .4s ease both;
   }
-  label { display: block; font-size: 13px; color: #b8d8e0; margin: 0 0 6px 2px; }
-  select, input[type="password"] {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 16px;
-    border-radius: 9px;
-    border: 1px solid rgba(255,255,255,0.22);
-    background: rgba(0,0,0,0.30);
-    color: #fff;
-    margin-bottom: 18px;
-    outline: none;
+  @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  .role {
+    padding: 18px 14px; border-radius: 16px; cursor: pointer; text-align: center;
+    background: rgba(255,255,255,.04); border: 1px solid rgba(148,190,220,.16);
+    transition: transform .15s, border-color .15s, background .15s;
   }
-  select:focus, input:focus { border-color: #ffb703; }
-  select option { background: #1b3a4b; color: #fff; }
-  button {
-    width: 100%;
-    padding: 13px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 9px;
-    background: #ffb703;
-    color: #222;
-    cursor: pointer;
-    transition: background .15s;
+  .role:hover { transform: translateY(-3px); background: rgba(255,255,255,.07); }
+  .role.sel { border-color: #ffb703; background: rgba(255,183,3,.1); box-shadow: 0 0 26px rgba(255,183,3,.18); }
+  .role .ic { font-size: 34px; }
+  .role .rt { font-weight: 800; margin-top: 6px; font-size: 15px; }
+  .role .rd { color: #8fb3c9; font-size: 12px; margin-top: 3px; }
+  .step { display: none; animation: popIn .3s ease both; }
+  .step.on { display: block; }
+  .lbl { display: block; font-size: 12px; color: #8fb3c9; margin: 0 0 8px 2px; text-transform: uppercase; letter-spacing: .6px; }
+  .tgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+  @media (max-width: 560px) { .tgrid { grid-template-columns: repeat(3, 1fr); } }
+  .tbtn {
+    padding: 12px 6px; border-radius: 13px; cursor: pointer; text-align: center;
+    background: rgba(255,255,255,.04); border: 1px solid rgba(148,190,220,.16);
+    transition: transform .12s, border-color .12s, background .12s;
   }
-  button:hover { background: #ffc733; }
+  .tbtn:hover { transform: translateY(-2px); }
+  .tbtn.sel { border-color: #ffb703; background: rgba(255,183,3,.12); }
+  .tbtn .e { font-size: 22px; }
+  .tbtn .l { font-weight: 900; font-size: 15px; margin-top: 2px; }
+  .tbtn .n { font-size: 10.5px; color: #8fb3c9; margin-top: 2px; }
+  input {
+    width: 100%; padding: 13px 15px; font-size: 17px;
+    border-radius: 12px; border: 1px solid rgba(148,190,220,.28);
+    background: rgba(4,10,20,.55); color: #fff; outline: none;
+    letter-spacing: 1px; text-align: center;
+  }
+  input:focus { border-color: #ffb703; box-shadow: 0 0 0 3px rgba(255,183,3,.15); }
+  .hint { text-align: center; color: #8fb3c9; font-size: 12.5px; margin: 8px 0 16px; min-height: 16px; }
+  button.go {
+    width: 100%; padding: 15px; font-size: 17px; font-weight: 800;
+    border: none; border-radius: 13px; cursor: pointer;
+    background: linear-gradient(135deg, #ffb703, #fb8500); color: #201600;
+    box-shadow: 0 8px 26px rgba(251,133,3,.35);
+    transition: transform .12s, box-shadow .12s;
+  }
+  button.go:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(251,133,3,.5); }
   .err {
-    display: none;
-    background: rgba(220,50,50,0.18);
-    border: 1px solid rgba(255,100,100,0.5);
-    color: #ffb0b0;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
-    margin-bottom: 14px;
+    display: none; background: rgba(239,70,111,.12); border: 1px solid rgba(239,70,111,.5);
+    color: #ff8fa3; border-radius: 11px; padding: 11px 13px; font-size: 14px; margin-bottom: 14px;
   }
-  .links {
-    margin-top: 22px;
-    text-align: center;
-    font-size: 14px;
-  }
-  .links a { color: #8ecae6; text-decoration: none; margin: 0 12px; }
+  .links { margin-top: 20px; text-align: center; font-size: 14px; }
+  .links a { color: #8ecae6; text-decoration: none; margin: 0 10px; }
   .links a:hover { text-decoration: underline; }
-  .teams {
-    margin-top: 14px;
-    font-size: 12.5px;
-    color: #9fc4d0;
-    text-align: center;
-    line-height: 1.7;
-  }
+  .back { text-align: center; margin-top: 10px; }
+  .back a { color: #8fb3c9; font-size: 13px; cursor: pointer; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🏭 Рынок под давлением</h1>
-  <div class="sub">Деловая игра: спрос, предложение и эластичность</div>
+  <h1>🏭 Рынок <span class="gold">под давлением</span></h1>
+  <div class="sub">Деловая игра: спрос, предложение и эластичность · 5 команд · 45–60 минут</div>
 
   <div class="card">
     <div id="err" class="err"></div>
-    <label for="who">Кто вы?</label>
-    <select id="who">
-      <option value="">— выберите роль —</option>
-      <option value="team">Игрок (команда)</option>
-      <option value="admin">Организатор (админ)</option>
-    </select>
 
-    <div id="teamBlock" style="display:none">
-      <label for="team">Ваша команда</label>
-      <select id="team"></select>
+    <div class="roles" id="roles">
+      <div class="role" data-role="team">
+        <div class="ic">🧑‍🤝‍🧑</div>
+        <div class="rt">Команда</div>
+        <div class="rd">20 студентов · 5 предприятий</div>
+      </div>
+      <div class="role" data-role="admin">
+        <div class="ic">🛠️</div>
+        <div class="rt">Организатор</div>
+        <div class="rd">Ведущий · аукционист · банкир · аналитик</div>
+      </div>
     </div>
 
-    <div id="passBlock" style="display:none">
-      <div id="passHint" class="teams" style="text-align:left; margin:-10px 0 6px 2px"></div>
-      <label for="pass">Пароль</label>
-      <input type="password" id="pass" placeholder="Введите пароль">
+    <div class="step" id="stepTeam">
+      <span class="lbl">Выберите команду</span>
+      <div class="tgrid" id="tgrid"></div>
+      <span class="lbl">Пароль команды</span>
+      <input type="text" id="pass" placeholder="••••••" autocomplete="off">
+      <div class="hint" id="passHint"></div>
+      <button class="go" id="go">Войти в игру →</button>
     </div>
 
-    <button id="go">Войти</button>
+    <div class="step" id="stepAdmin">
+      <span class="lbl">Пароль организатора</span>
+      <input type="password" id="passA" placeholder="•••••" autocomplete="off">
+      <div class="hint">Пароль по умолчанию: admin</div>
+      <button class="go" id="goA">Открыть панель →</button>
+    </div>
 
-    <div class="teams" id="teamHint"></div>
+    <div class="back" id="back" style="display:none"><a onclick="reset()">← выбрать другую роль</a></div>
   </div>
 
   <div class="links">
@@ -127,36 +142,46 @@
 
 <script>
 const TEAM_NAMES = { A: 'Хлеб', B: 'Мебель', C: 'Одежда', D: 'Электроника', E: 'Стройматериалы' };
-const who = document.getElementById('who');
-const teamBlock = document.getElementById('teamBlock');
-const passBlock = document.getElementById('passBlock');
-const teamSel = document.getElementById('team');
+const TEAM_EMOJI = { A: '🍞', B: '🛋️', C: '👕', D: '💻', E: '🧱' };
+let role = null, teamId = null;
 const err = document.getElementById('err');
-const hint = document.getElementById('teamHint');
 
-who.onchange = () => {
-  teamBlock.style.display = who.value === 'team' ? '' : 'none';
-  passBlock.style.display = who.value ? '' : 'none';
-  err.style.display = 'none';
-  if (who.value === 'team') {
-    teamSel.innerHTML = Object.keys(TEAM_NAMES)
-      .map(k => `<option value="${k}">Команда ${k} — ${TEAM_NAMES[k]}</option>`).join('');
-    hint.innerHTML = Object.keys(TEAM_NAMES).map(k => `${k} — ${TEAM_NAMES[k]}`).join(' &nbsp;•&nbsp; ');
-    document.getElementById('passHint').textContent = 'Пароль: буква команды латиницей + 2026 (например, A2026). Русские буквы тоже принимаются.';
-  } else {
-    hint.textContent = '';
-    document.getElementById('passHint').textContent = '';
-  }
-};
+document.querySelectorAll('.role').forEach(r => {
+  r.onclick = () => {
+    document.querySelectorAll('.role').forEach(x => x.classList.remove('sel'));
+    r.classList.add('sel');
+    role = r.dataset.role;
+    document.getElementById('stepTeam').classList.toggle('on', role === 'team');
+    document.getElementById('stepAdmin').classList.toggle('on', role === 'admin');
+    document.getElementById('back').style.display = '';
+    err.style.display = 'none';
+  };
+});
 
-document.getElementById('go').onclick = async () => {
+function reset() {
+  role = null; teamId = null;
+  document.querySelectorAll('.role').forEach(x => x.classList.remove('sel'));
+  document.querySelectorAll('.step').forEach(x => x.classList.remove('on'));
+  document.getElementById('back').style.display = 'none';
   err.style.display = 'none';
-  const pass = document.getElementById('pass').value;
-  if (!who.value) { err.textContent = 'Выберите роль.'; err.style.display = 'block'; return; }
-  if (!pass) { err.textContent = 'Введите пароль.'; err.style.display = 'block'; return; }
-  const body = who.value === 'team'
-    ? { role: 'team', id: teamSel.value, pass }
-    : { role: 'admin', id: 'main', pass };
+}
+
+const tg = document.getElementById('tgrid');
+tg.innerHTML = Object.keys(TEAM_NAMES).map(k =>
+  '<div class="tbtn" data-t="' + k + '"><div class="e">' + TEAM_EMOJI[k] + '</div>' +
+  '<div class="l">' + k + '</div><div class="n">' + TEAM_NAMES[k] + '</div></div>').join('');
+tg.querySelectorAll('.tbtn').forEach(b => {
+  b.onclick = () => {
+    tg.querySelectorAll('.tbtn').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    teamId = b.dataset.t;
+    document.getElementById('pass').focus();
+    document.getElementById('passHint').textContent = 'Пароль: буква команды + 2026 (например, ' + teamId + '2026). Русская буква тоже подойдёт.';
+  };
+});
+
+async function tryLogin(body) {
+  err.style.display = 'none';
   try {
     const r = await fetch('/api/login', {
       method: 'POST',
@@ -165,14 +190,27 @@ document.getElementById('go').onclick = async () => {
     });
     const j = await r.json();
     if (!j.ok) { err.textContent = j.error || 'Ошибка входа'; err.style.display = 'block'; return; }
-    if (who.value === 'team') location.href = '/team.html';
-    else location.href = '/admin.html';
+    location.href = j.redirect || (role === 'team' ? '/team.html' : '/admin.html');
   } catch (e) {
-    err.textContent = 'Сервер недоступен: ' + e.message;
-    err.style.display = 'block';
+    err.textContent = 'Сервер недоступен: ' + e.message; err.style.display = 'block';
   }
+}
+document.getElementById('go').onclick = () => {
+  if (!teamId) { err.textContent = 'Выберите команду.'; err.style.display = 'block'; return; }
+  const pass = document.getElementById('pass').value;
+  if (!pass) { err.textContent = 'Введите пароль.'; err.style.display = 'block'; return; }
+  tryLogin({ role: 'team', id: teamId, pass });
 };
-document.getElementById('pass').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('go').click(); });
+document.getElementById('goA').onclick = () => {
+  const pass = document.getElementById('passA').value;
+  if (!pass) { err.textContent = 'Введите пароль.'; err.style.display = 'block'; return; }
+  tryLogin({ role: 'admin', id: 'main', pass });
+};
+['pass', 'passA'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById(id === 'pass' ? 'go' : 'goA').click();
+  });
+});
 </script>
 </body>
 </html>
