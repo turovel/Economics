@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Рынок под давлением — вход</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e8f1f2;
+    padding: 20px;
+  }
+  .wrap { width: 100%; max-width: 560px; }
+  h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .sub {
+    text-align: center;
+    color: #9fc4d0;
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    padding: 26px;
+    backdrop-filter: blur(6px);
+  }
+  label { display: block; font-size: 13px; color: #b8d8e0; margin: 0 0 6px 2px; }
+  select, input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 9px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(0,0,0,0.30);
+    color: #fff;
+    margin-bottom: 18px;
+    outline: none;
+  }
+  select:focus, input:focus { border-color: #ffb703; }
+  select option { background: #1b3a4b; color: #fff; }
+  button {
+    width: 100%;
+    padding: 13px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 9px;
+    background: #ffb703;
+    color: #222;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  button:hover { background: #ffc733; }
+  .err {
+    display: none;
+    background: rgba(220,50,50,0.18);
+    border: 1px solid rgba(255,100,100,0.5);
+    color: #ffb0b0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .links {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 14px;
+  }
+  .links a { color: #8ecae6; text-decoration: none; margin: 0 12px; }
+  .links a:hover { text-decoration: underline; }
+  .teams {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: #9fc4d0;
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🏭 Рынок под давлением</h1>
+  <div class="sub">Деловая игра: спрос, предложение и эластичность</div>
+
+  <div class="card">
+    <div id="err" class="err"></div>
+    <label for="who">Кто вы?</label>
+    <select id="who">
+      <option value="">— выберите роль —</option>
+      <option value="team">Игрок (команда)</option>
+      <option value="admin">Организатор (админ)</option>
+    </select>
+
+    <div id="teamBlock" style="display:none">
+      <label for="team">Ваша команда</label>
+      <select id="team"></select>
+    </div>
+
+    <div id="passBlock" style="display:none">
+      <label for="pass">Пароль</label>
+      <input type="password" id="pass" placeholder="Введите пароль">
+    </div>
+
+    <button id="go">Войти</button>
+
+    <div class="teams" id="teamHint"></div>
+  </div>
+
+  <div class="links">
+    <a href="/tutorial-team.html">📘 Туториал для игроков</a>
+    <a href="/tutorial-admin.html">🛠️ Туториал для организаторов</a>
+  </div>
+</div>
+
+<script>
+const TEAM_NAMES = { A: 'Хлеб', B: 'Мебель', C: 'Одежда', D: 'Электроника', E: 'Стройматериалы' };
+const who = document.getElementById('who');
+const teamBlock = document.getElementById('teamBlock');
+const passBlock = document.getElementById('passBlock');
+const teamSel = document.getElementById('team');
+const err = document.getElementById('err');
+const hint = document.getElementById('teamHint');
+
+who.onchange = () => {
+  teamBlock.style.display = who.value === 'team' ? '' : 'none';
+  passBlock.style.display = who.value ? '' : 'none';
+  err.style.display = 'none';
+  if (who.value === 'team') {
+    teamSel.innerHTML = Object.keys(TEAM_NAMES)
+      .map(k => `<option value="${k}">Команда ${k} — ${TEAM_NAMES[k]}</option>`).join('');
+    hint.innerHTML = Object.keys(TEAM_NAMES).map(k => `${k} — ${TEAM_NAMES[k]}`).join(' &nbsp;•&nbsp; ');
+  } else {
+    hint.textContent = '';
+  }
+};
+
+document.getElementById('go').onclick = async () => {
+  err.style.display = 'none';
+  const pass = document.getElementById('pass').value;
+  if (!who.value) { err.textContent = 'Выберите роль.'; err.style.display = 'block'; return; }
+  if (!pass) { err.textContent = 'Введите пароль.'; err.style.display = 'block'; return; }
+  const body = who.value === 'team'
+    ? { role: 'team', id: teamSel.value, pass }
+    : { role: 'admin', id: 'main', pass };
+  try {
+    const r = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const j = await r.json();
+    if (!j.ok) { err.textContent = j.error || 'Ошибка входа'; err.style.display = 'block'; return; }
+    if (who.value === 'team') location.href = '/team.html';
+    else location.href = '/admin.html';
+  } catch (e) {
+    err.textContent = 'Сервер недоступен: ' + e.message;
+    err.style.display = 'block';
+  }
+};
+document.getElementById('pass').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('go').click(); });
+</script>
+</body>
+</html>

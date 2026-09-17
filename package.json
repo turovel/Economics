@@ -1,0 +1,11 @@
+{
+  "name": "market-under-pressure",
+  "version": "1.0.0",
+  "description": "Деловая игра «Рынок под давлением» — спрос, предложение и эластичность (админ-панель + игровые панели команд)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=16" },
+  "license": "MIT"
+}

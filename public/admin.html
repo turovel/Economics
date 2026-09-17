@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Панель организаторов — Рынок под давлением</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">🛠️ Панель организаторов</span>
+  <span class="phase" id="phaseName"></span>
+  <span class="timer" id="timer"></span>
+  <span class="spacer"></span>
+  <a href="/tutorial-admin.html" target="_blank">📘 Туториал</a>
+  <a href="/" id="logout">Выйти</a>
+  <span class="badge ok" id="netBadge">на связи</span>
+</div>
+
+<div class="wrap">
+  <div id="eventBanner" class="event-banner"></div>
+
+  <div class="panel" id="controls">
+    <h3>🎮 Управление раундами <span class="hint">ведущий</span></h3>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+      <select id="phaseSel" style="min-width:280px"></select>
+      <button id="btnPhase">▶ Перейти к фазе</button>
+      <span style="width:20px"></span>
+      <input type="number" id="timerMin" value="7" min="0" max="30" style="width:70px" title="минуты">
+      <span class="notice">мин</span>
+      <button id="btnTimerStart" class="secondary">⏱ Запустить таймер</button>
+      <button id="btnTimerStop" class="secondary">⏹ Стоп</button>
+      <span style="width:20px"></span>
+      <input type="text" id="eventText" placeholder="Объявление для всех команд..." style="flex:1; min-width:220px">
+      <button id="btnEvent" class="secondary">📣 Объявить</button>
+    </div>
+  </div>
+
+  <div class="panel" style="padding:10px 16px">
+    <div style="display:flex; gap:6px; flex-wrap:wrap" id="tabs">
+      <button class="secondary tabbtn" data-tab="overview">📊 Команды</button>
+      <button class="secondary tabbtn" data-tab="auction">🔨 Аукцион</button>
+      <button class="secondary tabbtn" data-tab="market">💰 Рынок</button>
+      <button class="secondary tabbtn" data-tab="events">📣 События</button>
+      <button class="secondary tabbtn" data-tab="scores">⭐ Баллы</button>
+      <button class="secondary tabbtn" data-tab="results">🏆 Итоги</button>
+      <button class="secondary tabbtn" data-tab="log">📜 Журнал</button>
+      <button class="secondary tabbtn" data-tab="reset">♻️ Сброс</button>
+    </div>
+  </div>
+
+  <div id="tab-overview" class="tabpage"></div>
+  <div id="tab-auction" class="tabpage" style="display:none"></div>
+  <div id="tab-market" class="tabpage" style="display:none"></div>
+  <div id="tab-events" class="tabpage" style="display:none"></div>
+  <div id="tab-scores" class="tabpage" style="display:none"></div>
+  <div id="tab-results" class="tabpage" style="display:none"></div>
+  <div id="tab-log" class="tabpage" style="display:none"></div>
+  <div id="tab-reset" class="tabpage" style="display:none"></div>
+</div>
+<script src="/common.js"></script>
+<script src="/admin.js"></script>
+</body>
+</html>

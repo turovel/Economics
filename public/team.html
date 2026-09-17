@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Панель команды — Рынок под давлением</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="topbar">
+  <span class="brand" id="brand">🏭 Команда</span>
+  <span class="phase" id="phaseName"></span>
+  <span class="timer" id="timer"></span>
+  <span class="spacer"></span>
+  <a href="/tutorial-team.html" target="_blank">📘 Инструкция</a>
+  <a href="/" id="logout">Выйти</a>
+  <span class="badge ok" id="netBadge">на связи</span>
+</div>
+
+<div class="wrap">
+  <div id="eventBanner" class="event-banner"></div>
+
+  <!-- РАУНД 1 -->
+  <div class="panel" id="p-round1">
+    <h3>📋 Раунд 1. Анализ спроса</h3>
+    <div class="grid2">
+      <div>
+        <p class="notice" style="margin-bottom:10px">
+          Изучите таблицу спроса на ваш товар. Найдите цену с максимальной выручкой
+          TR = P × Q и решите, какую цену установить.
+        </p>
+        <div id="demandTbl"></div>
+        <button class="big" id="btnReady1" style="margin-top:12px">✅ Анализ завершён</button>
+        <span id="ready1Status" style="margin-left:10px"></span>
+        <div class="notice" style="margin-top:6px">Готовность увидят организаторы.</div>
+      </div>
+      <div>
+        <h3 style="font-size:13.5px">📝 Блокнот аналитика</h3>
+        <textarea id="notes" style="width:100%; min-height:180px; background:rgba(0,0,0,0.3); color:#e8f1f2; border:1px solid rgba(255,255,255,0.14); border-radius:8px; padding:10px; font-size:14px;" placeholder="Расчёты, гипотезы, выгодные цены..."></textarea>
+        <div class="notice" style="margin-top:6px">Черновик сохраняется только в этом браузере.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- АУКЦИОН -->
+  <div class="panel" id="p-auction">
+    <h3>🔨 Аукцион ресурсов</h3>
+    <div id="auctionBox" class="notice">Организатор ещё не начал торги. Следите за объявлениями.</div>
+    <div id="bidForm" style="display:none; margin-top:12px">
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+        <b id="bidRes"></b>
+        <span class="notice">лот:</span><b id="bidQty"></b>
+        <label class="notice">ставка за 1 ед., д.е.:</label>
+        <input type="number" id="bidInput" min="1" step="1" style="width:120px">
+        <button id="btnBid">🔨 Сделать ставку</button>
+      </div>
+      <div class="notice" style="margin-top:8px" id="bidHint"></div>
+    </div>
+  </div>
+
+  <!-- РАУНД 3 -->
+  <div class="panel" id="p-produce">
+    <h3>🏗️ Раунд 3. Производство</h3>
+    <div class="grid2">
+      <div>
+        <div class="stat-grid" id="resStats"></div>
+        <div style="margin-top:12px" id="produceForm">
+          <label class="notice">Сколько единиц произвести — максимум упирается в самый дефицитный ресурс:</label>
+          <div style="display:flex; gap:10px; margin-top:8px; align-items:center">
+            <input type="number" id="produceQty" min="1" max="10" value="1" style="width:110px">
+            <button id="btnProduce">🏗️ Запустить производство</button>
+            <span id="produceStatus"></span>
+          </div>
+          <div class="notice" style="margin-top:8px" id="produceHint"></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:13.5px">📦 Ваш товар и ресурсы</h3>
+        <div id="goodsInfo" class="notice"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- РАУНД 4 -->
+  <div class="panel" id="p-market">
+    <h3>💰 Раунд 4. Цена и рыночное равновесие</h3>
+    <p class="notice" style="margin-bottom:10px">
+      Выберите цену товара. Объём спроса по вашей цене рассчитает аналитик-организатор —
+      сколько единиц реально удастся продать, вы увидите после фиксации цены.
+    </p>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap" id="priceForm">
+      <label>Цена товара, д.е.:</label>
+      <select id="priceSel"></select>
+      <button id="btnLockPrice">🔒 Зафиксировать цену</button>
+      <span id="priceStatus"></span>
+    </div>
+    <div id="marketResult" style="margin-top:14px"></div>
+  </div>
+
+  <!-- РАУНД 5 -->
+  <div class="panel" id="p-elast">
+    <h3>📈 Раунд 5. Эластичность спроса</h3>
+    <p class="notice" style="margin-bottom:10px">
+      Организатор объявил изменение цены. Рассчитайте коэффициент эластичности
+      E = процент изменения спроса / процент изменения цены и определите тип спроса.
+      Подробный разбор с примером — в <a href="/tutorial-team.html" target="_blank">инструкции для игроков</a>.
+    </p>
+    <div class="grid3">
+      <div><label>Цена была, д.е.</label><br><input type="number" id="p1" style="width:100%" placeholder="например, 300"></div>
+      <div><label>Цена стала, д.е.</label><br><input type="number" id="p2" style="width:100%" placeholder="например, 400"></div>
+      <div><label>Спрос был, шт.</label><br><input type="number" id="q1" style="width:100%" placeholder="например, 6"></div>
+      <div><label>Спрос стал, шт.</label><br><input type="number" id="q2" style="width:100%" placeholder="например, 4"></div>
+      <div><label>Коэффициент E (до сотых)</label><br><input type="number" id="ed" step="0.01" style="width:100%" placeholder="например, -1.8"></div>
+      <div><label>Тип спроса</label><br>
+        <select id="etype" style="width:100%">
+          <option value="">— выберите —</option>
+          <option>Эластичный (|E| &gt; 1)</option>
+          <option>Неэластичный (|E| &lt; 1)</option>
+          <option>Единичная эластичность (|E| = 1)</option>
+        </select>
+      </div>
+    </div>
+    <button id="btnElast" class="big" style="margin-top:14px">📨 Отправить расчёт</button>
+    <span id="elastStatus" style="margin-left:10px"></span>
+  </div>
+
+  <!-- РАУНД 6 -->
+  <div class="panel" id="p-elasts">
+    <h3>🧗 Раунд 6. Эластичность предложения</h3>
+    <p class="notice" style="margin-bottom:10px">
+      Организатор объявил изменение условий производства. Рассчитайте
+      E s = процент изменения предложения / процент изменения цены.
+    </p>
+    <div class="grid3">
+      <div><label>Цена была</label><br><input type="number" id="sp1" style="width:100%"></div>
+      <div><label>Цена стала</label><br><input type="number" id="sp2" style="width:100%"></div>
+      <div><label>Предложение было, шт.</label><br><input type="number" id="sq1" style="width:100%"></div>
+      <div><label>Предложение стало, шт.</label><br><input type="number" id="sq2" style="width:100%"></div>
+      <div><label>Коэффициент E s (до сотых)</label><br><input type="number" id="es" step="0.01" style="width:100%"></div>
+      <div><label>Вывод команды</label><br>
+        <select id="sconcl" style="width:100%">
+          <option value="">— выберите —</option>
+          <option>Эластичное</option>
+          <option>Неэластичное</option>
+          <option>Единичная эластичность</option>
+        </select>
+      </div>
+    </div>
+    <button id="btnElastS" class="big" style="margin-top:14px">📨 Отправить расчёт</button>
+    <span id="elastSStatus" style="margin-left:10px"></span>
+  </div>
+
+  <!-- РАУНД 7 -->
+  <div class="panel" id="p-final">
+    <h3>🧮 Раунд 7. Итоговый расчёт</h3>
+    <p class="notice" style="margin-bottom:10px">
+      Подведите итог: проверьте выручку, затраты и прибыль, затем отправьте отчёт организаторам.
+      Формулы и порядок расчёта — в <a href="/tutorial-team.html" target="_blank">инструкции</a>.
+    </p>
+    <div class="stat-grid" id="finalStats"></div>
+    <button id="btnFinal" class="big" style="margin-top:14px">📨 Отправить отчёт</button>
+    <span id="finalStatus" style="margin-left:10px"></span>
+  </div>
+
+  <!-- ИТОГИ -->
+  <div class="panel" id="p-results">
+    <h3>🏆 Итоги игры</h3>
+    <div id="resultsBox" class="notice">Организатор ещё не подвёл итоги.</div>
+    <div id="finalStats2" class="stat-grid" style="margin-top:12px"></div>
+  </div>
+
+  <div class="panel">
+    <h3>ℹ️ Статус <span class="hint">видно всегда</span></h3>
+    <div id="waitingHint" class="notice">Следите за объявлениями организаторов.</div>
+  </div>
+
+<script src="/common.js"></script>
+<script src="/team.js"></script>
+</body>
+</html>
