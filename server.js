@@ -180,7 +180,11 @@ const api = {
     if (body.role === 'team') {
       const id = String(body.id || '').toUpperCase();
       if (!TEAM_IDS.includes(id)) return { ok: false, error: 'Неизвестная команда' };
-      if (body.pass !== String(id) + '2026') return { ok: false, error: 'Неверный пароль команды' };
+      // нормализуем пароль: регистр, пробелы, русские буквы-двойники
+      const pass = String(body.pass || '').trim().toUpperCase()
+        .replace(/А/g, 'A').replace(/В/g, 'B').replace(/С/g, 'C')
+        .replace(/Е/g, 'E').replace(/Д/g, 'D');
+      if (pass !== String(id) + '2026') return { ok: false, error: 'Неверный пароль команды (буква команды + 2026)' };
       return { ok: true, redirect: '/team.html' };
     }
     return { ok: false, error: 'Некорректный запрос' };

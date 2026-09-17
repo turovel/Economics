@@ -1,6 +1,6 @@
 'use strict';
 // ===== Панель команды =====
-if (!document.cookie.includes('sid=')) { location.href = '/'; }
+// вход проверяется запросом /api/state (см. load())
 
 let S = null;   // состояние с сервера
 let me = null;  // данные моей команды

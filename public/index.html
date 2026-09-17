@@ -109,6 +109,7 @@
     </div>
 
     <div id="passBlock" style="display:none">
+      <div id="passHint" class="teams" style="text-align:left; margin:-10px 0 6px 2px"></div>
       <label for="pass">Пароль</label>
       <input type="password" id="pass" placeholder="Введите пароль">
     </div>
@@ -141,8 +142,10 @@ who.onchange = () => {
     teamSel.innerHTML = Object.keys(TEAM_NAMES)
       .map(k => `<option value="${k}">Команда ${k} — ${TEAM_NAMES[k]}</option>`).join('');
     hint.innerHTML = Object.keys(TEAM_NAMES).map(k => `${k} — ${TEAM_NAMES[k]}`).join(' &nbsp;•&nbsp; ');
+    document.getElementById('passHint').textContent = 'Пароль: буква команды латиницей + 2026 (например, A2026). Русские буквы тоже принимаются.';
   } else {
     hint.textContent = '';
+    document.getElementById('passHint').textContent = '';
   }
 };
 

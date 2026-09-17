@@ -1,6 +1,6 @@
 'use strict';
 // ===== Панель организаторов =====
-if (!document.cookie.includes('sid=')) { location.href = '/'; }
+// вход проверяется запросом /api/state (см. load())
 
 let S = null;          // состояние с сервера
 let tab = 'overview';  // активная вкладка
